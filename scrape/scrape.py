@@ -7,9 +7,9 @@ d1 = ['Air Force', 'Albany', 'Army', 'Bellarmine', 'Binghamton', 'Boston U.', 'B
       'Cleveland State', 'Colgate', 'Cornell', 'Dartmouth', 'Delaware', 'Denver', 'Detroit Mercy', 'Drexel', 'Duke',
       'Fairfield', 'Furman', 'Georgetown', 'Hampton', 'Hartford', 'Harvard', 'High Point', 'Hobart', 'Hofstra',
       'Holy Cross','Jacksonville', 'Johns Hopkins', 'Lafayette', 'Lehigh', 'Loyola', 'Manhattan', 'Marist',
-      'Marquette', 'Maryland','Mercer', 'Michigan', 'Monmouth', "Mount St. Mary's", 'Navy', 'NJIT', 'North Carolina',
+      'Marquette', 'Maryland','Mercer', 'Michigan', 'Monmouth', "Mount St. Mary''s", 'Navy', 'NJIT', 'North Carolina',
       'Notre Dame','Ohio State','Penn', 'Penn State', 'Princeton', 'Providence', 'Quinnipiac', 'Richmond',
-      'Robert Morris', 'Rutgers','Sacred Heart',"Saint Joseph's", "St Bonaventure", 'Siena', "St. John's",
+      'Robert Morris', 'Rutgers','Sacred Heart',"Saint Joseph''s", "St Bonaventure", 'Siena', "St. John''s",
       'Stony Brook', 'Syracuse', 'Towson', 'UMass','UMass Lowell','UMBC', 'Vermont', 'Villanova', 'Virginia',
       'VMI', 'Wagner', 'Yale', "Utah"]
 
