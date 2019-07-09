@@ -2,6 +2,7 @@ from os import getenv
 import scrape
 import pymysql
 from pymysql.err import OperationalError
+from google.cloud import pubsub_v1
 
 
 CONNECTION_NAME = getenv('db_conn')
@@ -26,6 +27,9 @@ def scrape_upload(data,context):
 
     # upload to db
     upload(games,scheduled)
+
+    # invoke model run using gcloud pubsub
+    push_to_pubsub()
 
     return "done"
 
@@ -75,6 +79,13 @@ def upload(games,scheduled):
                 );
             '''
             cursor.execute(sql_string)
+
+
+def push_to_pubsub():
+    publisher = pubsub_v1.PublisherClient()
+    topic_path = publisher.topic_path('lacrosselo', 'runmodel-pubsub')
+    data = '{}'.encode('utf-8')
+    publisher.publish(topic_path, data=data)
 
 
 def get_cursor():

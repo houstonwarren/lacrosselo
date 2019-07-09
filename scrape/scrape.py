@@ -2,15 +2,14 @@ from bs4 import BeautifulSoup
 import requests
 import pandas as pd
 
-
 d1 = ['Air Force', 'Albany', 'Army', 'Bellarmine', 'Binghamton', 'Boston U.', 'Brown', 'Bryant', 'Bucknell', 'Canisius',
       'Cleveland State', 'Colgate', 'Cornell', 'Dartmouth', 'Delaware', 'Denver', 'Detroit Mercy', 'Drexel', 'Duke',
       'Fairfield', 'Furman', 'Georgetown', 'Hampton', 'Hartford', 'Harvard', 'High Point', 'Hobart', 'Hofstra',
-      'Holy Cross','Jacksonville', 'Johns Hopkins', 'Lafayette', 'Lehigh', 'Loyola', 'Manhattan', 'Marist',
-      'Marquette', 'Maryland','Mercer', 'Michigan', 'Monmouth', "Mount St. Mary''s", 'Navy', 'NJIT', 'North Carolina',
-      'Notre Dame','Ohio State','Penn', 'Penn State', 'Princeton', 'Providence', 'Quinnipiac', 'Richmond',
-      'Robert Morris', 'Rutgers','Sacred Heart',"Saint Joseph''s", "St Bonaventure", 'Siena', "St. John''s",
-      'Stony Brook', 'Syracuse', 'Towson', 'UMass','UMass Lowell','UMBC', 'Vermont', 'Villanova', 'Virginia',
+      'Holy Cross', 'Jacksonville', 'Johns Hopkins', 'Lafayette', 'Lehigh', 'Loyola', 'Manhattan', 'Marist',
+      'Marquette', 'Maryland', 'Mercer', 'Michigan', 'Monmouth', "Mount St. Mary''s", 'Navy', 'NJIT', 'North Carolina',
+      'Notre Dame', 'Ohio State', 'Penn', 'Penn State', 'Princeton', 'Providence', 'Quinnipiac', 'Richmond',
+      'Robert Morris', 'Rutgers', 'Sacred Heart', "Saint Joseph''s", "St Bonaventure", 'Siena', "St. John''s",
+      'Stony Brook', 'Syracuse', 'Towson', 'UMass', 'UMass Lowell', 'UMBC', 'Vermont', 'Villanova', 'Virginia',
       'VMI', 'Wagner', 'Yale', "Utah"]
 
 
@@ -23,7 +22,7 @@ def scrape_link(link):
     """
     page = requests.get(link)
 
-    #init parser and loop through rows
+    # init parser and loop through rows
     games = []
     scheduled = []
     data = BeautifulSoup(page.content, 'html.parser')
@@ -78,7 +77,7 @@ def scrape_link(link):
             ot = 0
             number_ot = 0
             tourney = 1
-            new_row[-1] = new_row[-1].split(" ")[0] # this strips the letter out
+            new_row[-1] = new_row[-1].split(" ")[0]  # this strips the letter out
         # if neither
         else:
             ot = 0
@@ -100,13 +99,13 @@ def scrape_link(link):
         # case logic for home and away teams
         # @ is in the row if the game is at a home stadium, else neutral
         if '@' in new_row[0]:
-            team1 = new_row[0][1:] # index at 1 to remove @ sign
+            team1 = new_row[0][1:]  # index at 1 to remove @ sign
             team2 = new_row[2]
             team1_score = new_row[1]
             team2_score = new_row[3]
             neutral = 0
         elif '@' in new_row[2]:
-            team1 = new_row[2][1:] # index at 1 to remove @ sign
+            team1 = new_row[2][1:]  # index at 1 to remove @ sign
             team2 = new_row[0]
             team1_score = new_row[3]
             team2_score = new_row[1]
@@ -120,7 +119,7 @@ def scrape_link(link):
 
         # append to final dictionary
         row_dict = {"date": date_string, "team1": team1, "team1_score": team1_score, "team2": team2,
-                    "team2_score": team2_score,"ot": ot, "number_ot": number_ot, "season": year,
+                    "team2_score": team2_score, "ot": ot, "number_ot": number_ot, "season": year,
                     "neutral": neutral, "tourney": tourney}
         if unplayed:
             scheduled.append(row_dict)
@@ -145,13 +144,11 @@ def harmonize_team_names(games, scheduled):
     :return: games, scheduled, with team names changed to match legacy data source
     """
     translate_dict = {"Mt St Mary's": "Mount St. Mary''s", "Boston Univ": "Boston U.",
-                      "St Joseph's PA": "Saint Joseph''s","Loyola MD": "Loyola", "Massachusetts": "UMass",
-                      "MA Lowell": "UMass Lowell","St John's": "St. John''s","Monmouth NJ": "Monmouth",
-                      "Detroit": "Detroit Mercy","Hobart & Smith": "Hobart","Ohio St": "Ohio State",
-                      "Penn St": "Penn State","Cleveland St": "Cleveland State","St. John's": "St. John''s",
+                      "St Joseph's PA": "Saint Joseph''s", "Loyola MD": "Loyola", "Massachusetts": "UMass",
+                      "MA Lowell": "UMass Lowell", "St John's": "St. John''s", "Monmouth NJ": "Monmouth",
+                      "Detroit": "Detroit Mercy", "Hobart & Smith": "Hobart", "Ohio St": "Ohio State",
+                      "Penn St": "Penn State", "Cleveland St": "Cleveland State", "St. John's": "St. John''s",
                       "Mount St. Mary's": "Mount St. Mary''s", "Saint Joseph's": "Saint Joseph''s"}
-
-
 
     for index, game in games.iterrows():
         if game["team1"] in translate_dict.keys():
@@ -177,6 +174,7 @@ def delete_if_not_d1(games, scheduled, teams):
     :param teams: list of teams in d1
     :return: games,scheduled dataframes with games where only both teams in d1
     """
+
     for index, game in games.iterrows():
         if game["team1"] not in teams or game["team2"] not in teams:
             games = games.drop(index=index)
