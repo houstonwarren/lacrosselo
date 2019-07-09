@@ -300,7 +300,7 @@ class EloRank:
         :param szn: Starting season to run onwards
         :return: nested lists of bins, percentages, and games in each bin
         """
-        bins = range(0, 100 + bin_size, bin_size)
+        bins = range(50, 100 + bin_size, bin_size)
         bin_size = bin_size / 100
         brackets = []
         if szn != 'all':
@@ -320,20 +320,32 @@ class EloRank:
             for game in predictions_bins:
                 mov = int(game[5])
                 game = game[7:].astype("float")
+                game_prob = game[30]
+                home_is_favorite = True
 
-                if bin <= game[30] < bin + bin_size:
-                    num_games += 1
-                    # find proportion of wins
-                    if game[30] > 0.5 and mov > 0:
+                # represent games where home win prob < 50% as a > 50% prediction for the away team
+                # this allows us to get rid of converse probabilily buckets
+                # ie we don't need a 0-5 bucket if we have a 95-100 bucket. We can just count 0-5 as a 95-100
+                # prediction for the away team
+                if game_prob < 0.50:
+                    game_prob = 1 - game_prob
+                    home_is_favorite = False
+
+                # if game is in the current
+                if bin <= game_prob < bin + bin_size:
+                    num_games += 1 # add to bin count
+
+                    #add to the win count if the prediction was correct
+                    if home_is_favorite and mov > 0:
                         win_count += 1
-                    elif game[30] < 0.5 and mov < 0:
+                    elif not home_is_favorite and mov < 0:
                         win_count += 1
 
             bracket.append(num_games)
             bracket.append(win_count)
 
+            # produce win pct for this bin
             if num_games != 0:
-                # produce win pct for this bin
                 win_prop = win_count / num_games
                 if bin < 0.5:
                     win_prop = 1 - win_prop
@@ -392,13 +404,12 @@ class EloRank:
         brackets = self.binned_results(bin_size)
 
         for bracket in brackets:
-            bin = bracket[0] / 100
-            bin_size = bracket[1] / 100
+            bin_start = bracket[0] / 100
             num_games = bracket[2]
             win_prop = bracket[4]
 
             # create the brier decomposition
-            add_calibration = num_games * (bin + bin_size / 2 - win_prop) ** 2
+            add_calibration = num_games * (bin_start + bin_size / 200 - win_prop) ** 2
             calibration += add_calibration
 
             add_refinement = num_games * (win_prop * (1 - win_prop))

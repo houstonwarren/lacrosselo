@@ -15,12 +15,12 @@ SCRAPE_LINK = getenv('scrape_link')
 
 
 # TODO
-# add logging statements
 # add citations
 # fix the display issue for menu bar on mobile
 # retrain on fewer years
 # add underline on highlight for menu bar
-# change font and some documentation
+# add invocation of pubsub
+# change bracket calculation
 
 
 def run_model(data,context):
