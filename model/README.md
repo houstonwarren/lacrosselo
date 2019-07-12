@@ -1,6 +1,4 @@
-# lacrosselo
-a margin based elo ranking system for college lacrosse
+# lacrosselo model
+a margin based elo ranking system for college lacrosse.
 
-based on the paper and code found [here](https://arxiv.org/abs/1802.00527) by John Scott Moreland and Matthew C. Superdock
-
-and using scores collected and curated by [Kenneth Massey](https://www.masseyratings.com/)
+Contains the EloRank class for all funcationality related to the model - can be arbitarily applied beyond lacrosse to any head-to-head set of games in the same format as the games pandas DataFrame. 
