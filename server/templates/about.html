@@ -1,0 +1,144 @@
+<head>
+    <meta charset="utf-8">
+    <title>lacrosse elo - home</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.css" src=></link>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Courier;
+        }
+    </style>
+</head>
+
+<body>
+  {% include 'nav.html' %}
+
+  <section style="padding-top: 30px; padding-bottom: 15px">
+    <div class="container">
+      <h1 class="title" style="margin-left: 20px;">about</h1>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="columns">
+        <div class="column is-two-thirds">
+
+          <div class="content" style="margin-left: 20px; margin-right: 20px">
+            <h4 class="subtitle is-4">
+              the model:
+            </h4>
+            <p>
+              Elo (ee-lo) models were developed by the Hungarian mathmetician Arpad Elo as a means of ranking chess
+                players. However, in recent years the model has gained popularity as a framework to rank sports teams
+                due to its intuitive and powerful nature.
+            </p>
+
+            <p>
+              It's a simple idea. All teams have an Elo score, and when two teams play, their score difference
+                determines their probability of winning. A higher Elo score corresponds to a stronger team. When a team
+                wins, they take some of the loser's Elo points and add it to their score - the loser loses these points.
+                In this sense, Elo is a zero-sum model: the only way more points are introduced is if more teams are
+                added to the league. The strongest teams have the most points - the weakest teams have the fewest.
+            </p>
+
+            <p>
+              When a game is played, the difference between the teams' Elo scores is input into the Elo function
+                (logistic CDF), which calculates the probability of each team winning. If an underdog wins, they take
+                more points than if a favorite wins. If a favorite wins, they take fewer points than if the underdog
+                had won. If the difference between teams' Elo is large, then underdogs win even more points and
+                favorites win fewer. The ultimate result is that strong teams rise to the top, and weak teams trend
+                towards the bottom. Plenty has been written about Elo models strengths and weaknesses, and better
+                explained, <a href='https://fivethirtyeight.com/features/introducing-nfl-elo-ratings/'>here</a> and
+                <a href='http://www.eloratings.net/about'>here</a>.
+            </p>
+
+            <p>
+              Unlike in chess, sports have margins of victory, home teams, and seasons. Adjustments are made to this
+                model accordingly. An underdog ranked 1200 that wins by 10 against a 1400 ranked team will win more
+                points than if they won by 3. Hometeams are given a boost of 54 Elo points, which corresponds to a
+                +7% chance of winning, to account for the 57% historical home team win rate. Between each season, the
+                teams are regressed back to the mean score of 1400 to account for change in personnel. This model
+                uses <a href='https://fivethirtyeight.com/features/how-we-calculate-nba-elo-ratings/'>this equation</a>
+                (see "Margin of Victory") from FiveThirtyEight to adjust the elo gain/loss according by according to
+                MOV.
+            </p>
+
+            <p>
+              The margin of victory predictions are produced using the method outlined in
+                <a href='https://arxiv.org/pdf/1802.00527.pdf'>this paper</a> by John Scott Moreland and Matthew C.
+                Superdock. The central idea is to "redefine what it means to win" - instead of keeping track of one
+                elo score for every team, you keep track of many, each one corresponding to a different definition of
+                winning. For example, one elo rank might correspond to winning by 6 points (in the eyes of this elo
+                rank, a a win by 5 points would be considered a loss). The elo rank will go up if a team wins by six
+                or more, down otherwise. In this way, the probability of winning by six is influenced by a team's
+                historical record of when they have or have not cleared their line. There is one such elo rank kept
+                for all feasible margins of victory/loss for every team. The predicted scoreline is the median of the
+                two team's conditional cumulative probability distribution of winning by any particular scoreline
+                given the two teams' elo rank point difference. It's a simple way to expand on the foundations provided
+                by the elo model to predict scorelines.
+            </p>
+
+            <p>
+              This model is trained on data from 2005-2014 and tested on out-of-sample data from 2015-2018. There are
+                two key parameters to the model that were optimized.
+            </p>
+
+            <p>
+              The first is K, which is the number of points that a team loses or wins each game. Of course, this is
+                adjusted by difference in rankings and margin-of-victory as discussed above. In this model, I found
+                the optimal K to be 48.
+            </p>
+
+            <p>
+              The second value to optimize is the season change, or the percent to which each team is regressed back
+                to the mean at the start of each season. While you might expect this to be 25%, given that college
+                teams lose roughly 1/4 of their team each year to graduation, I found the optimal value to instead
+                be 30%, perhaps due to the fact that older players tend to start and contribute more to each team.
+            </p>
+
+            <p>
+              This model borrows from those at World Football Elo Rankings and FiveThirtyEight. Scores are scraped,
+                with permission, from Kenneth Massey at his excellent <a href='https://www.masseyratings.com/'>site</a>.
+                This model is still in it's early stages, and I am sure that it still has much to improve upon. Like all
+                probability models, it should not be taken as fact. I would be happy to hear from you on any suggested
+                improvements. All code available on GitHub
+                <a href='https://github.com/houstonwarren/lacrosselo'>here</a>.
+            </p>
+
+            <p>
+                This site is built using Google Cloud Platform and the Flask webserver framework. Scores and predictions
+                are updated a midnight each night using a Cloud Function, and this app is served as a Flask function
+                mounted on App Engine.
+            </p>
+
+              <p>
+                Full citations for this project can be found in the GitHub repo.
+            </p>
+              <br>
+          </div>
+
+        </div>
+
+        <div class="column is-one-third">
+          <div class="content" style="margin-left: 20; margin-right: 20">
+            <h4 class="subtitle is-4">
+              me:
+            </h4>
+            <p>
+              My name is Houston Warren and I am recent graduate of the Duke University Statistics department now
+                working as a data scientist/machine learning engineer. I am passionate about building mathematical
+                models and communicating them in a way that anyone can understand. Among other things, I am a renewable
+                energy and electricity nerd, an avid surfer,and lover of all things dog. Feel free to contact with me
+                with any questions or suggestions! This is my first foray into sports modeling, and I would be happy
+                to <a href="mailto:houstonswarren@gmail.com">hear from you.</a>
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+</body>

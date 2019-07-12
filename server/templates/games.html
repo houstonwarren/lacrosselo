@@ -1,0 +1,106 @@
+<head>
+    <meta charset="utf-8">
+    <title>lacrosse elo - games</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.css" src=></link>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Courier;
+        }
+    </style>
+</head>
+
+<body>
+
+  {% include 'nav.html' %}
+
+  <section style="padding-top: 30px; padding-bottom: 15px">
+    <div class="container">
+        <h1 class="title" style="margin-left: 20px;">upcoming game predictions</h1>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+        {% if 0 == upcoming|length %}
+          <h4 class="subtitle is-4" style="margin-left: 20px;">no games in the next week</h4>
+        {% else %}
+            <h4 class="subtitle is-4" style="margin-left: 20px;">next week of games:</h4>
+        {% endif %}
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+
+      {% set z = upcoming|length %}
+      {% set z = z | round(1,"ceil") | int%}
+      {% set z = z + 1 %}
+      {% for i in range(0,z,3) %}
+
+        {% if i <= upcoming|length - 3 %}
+          {% set y = 3 %}
+        {% else %}
+          {% set y = upcoming|length - i %}
+        {% endif %}
+
+        <div class="columns">
+          {% for game in upcoming[i:i+y] %}
+          <div class="column is-one-third">
+            <div class="content">
+                <div class="card">
+                  <div class="card-content">
+                    <div class="content">
+
+                      <div class="columns is-multiline is-mobile" style="margin-bottom:-12">
+
+                        <div class="column is-two-fifths">
+                          <strong>team</strong>
+                        </div>
+
+                        <div class="column is-one-fifth">
+                          <strong style="font-size: 11pt">elo</strong>
+                        </div>
+
+                        <div class="column is-one-fifth">
+                          <strong style="font-size: 11pt">p(win)</strong>
+                        </div>
+
+                        <div class="column is-one-fifth">
+                          <strong style="font-size: 11pt">line</strong>
+                        </div>
+
+                        <div class="column is-two-fifths">
+                          <p style="font-size: 10pt">{{game["team1"]|lower}}</p>
+                          <p style="font-size: 10pt">{{game["team2"]|lower}}</p>
+                        </div>
+
+                        <div class="column is-one-fifth">
+                          <p style="font-size: 11pt">{{game["team1_rank"]|float|round|int}}</p>
+                          <p style="font-size: 11pt">{{game["team2_rank"]|float|round|int}}</p>
+                        </div>
+
+                        <div class="column is-one-fifth">
+                          <p style="font-size: 11pt">{{ (100 * game["win_prop"]|float )|round|int }}%</p>
+                          <p style="font-size: 11pt">{{ (100 * (1 - game["win_prop"]|float))|round|int }}%</p>
+                        </div>
+
+                        <div class="column is-one-fifth">
+                          <p style="font-size: 11pt">{{game["line"]}}</p>
+                          <p style="font-size: 11pt">{{ -1 * game["line"]|float}}</p>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+          </div>
+
+          {% endfor %}
+        </div>
+      {% endfor %}
+    </div>
+  </section>
+
+</body>

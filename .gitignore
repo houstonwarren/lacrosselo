@@ -1,0 +1,7 @@
+*/env/
+*/.idea/
+*/deploy.sh
+*/__pycache__
+*/dev_server.sh
+*/key.json
+*/.gcloudignore

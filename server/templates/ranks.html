@@ -1,0 +1,52 @@
+<head>
+    <meta charset="utf-8">
+    <title>lacrosse elo - home</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.css" src=></link>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Courier;
+        }
+    </style>
+</head>
+
+<body>
+  {% include 'nav.html' %}
+
+  <section style="padding-top: 30; padding-bottom: 15">
+    <div class="container">
+      <h1 class="title" style="margin-left: 20;">full team rankings</h1>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+
+        <div class="columns">
+
+          <div class="column is-one-quarter is-centered" style="margin-left:15px">
+              <table class="table is-narrow is-bordered">
+                <tbody>
+                    {% for rank in ranks %}
+                    <tr>
+                        <td style="border: white !important;">
+                            <p class="has-text-right is-size-7" style="padding-top: 3px">{{loop.index}}.</p>
+                        </td>
+                        <td style="border: white !important;"> {{rank["team"]|lower}} </td>
+                        <td style="border: white !important;"> {{rank["rank"]|float|round|int}} </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+              </table>
+          <br>
+          </div>
+
+          <div class="column">
+          </div>
+
+        </div>
+
+    </div>
+  </section>
+
+</body>

@@ -1,0 +1,140 @@
+<head>
+    <meta charset="utf-8">
+    <title>lacrosse elo - performance</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.css" src=></link>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Courier;
+        }
+    </style>
+</head>
+
+<body>
+
+    {% include 'nav.html' %}
+
+    <section style="padding-top: 30px; padding-bottom: 15px">
+        <div class="container is-fluid">
+            <h1 class="title" style="padding-left: 20px;"> current season performance </h1>
+        </div>
+    </section>
+
+    <section>
+        <div class="container is-fluid">
+            <div class="columns is-centered">
+                <div class="column is-three-fifths-desktop" style="padding-left: 10px;">
+
+                    <table class="table table is-bordered is-fullwidth" style="border: white !important;">
+                        <thead>
+                            <tr>
+                                <th style="border: white !important;">
+                                    <p class="has-text-centered is-size-7-mobile">start</p>
+                                </th>
+                                <th style="border: white !important;">
+                                    <p class="has-text-centered is-size-7-mobile">end</p>
+                                </th>
+                                <th style="border: white !important;">
+                                    <p class="has-text-centered is-size-7-mobile">gms</p>
+                                </th>
+                                <th style="border: white !important;">
+                                    <p class="has-text-centered is-size-7-mobile">gms correct</p>
+                                </th>
+                                <th style="border: white !important;">
+                                    <p class="has-text-centered is-size-7-mobile">acc</p>
+                                </th>
+                                <th style="border: white !important;">
+                                    <p class="has-text-centered is-size-7-mobile">gms off</p>
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for bracket in brackets %}
+                            <tr>
+                                <td style="border: white !important;">
+                                    <p class="has-text-centered">{{bracket.bin_start}}%</p>
+                                </td>
+                                <td style="border: white !important;">
+                                    <p class="has-text-centered">{{bracket.bin_end}}%</p>
+                                </td>
+                                <td style="border: white !important;">
+                                    <p class="has-text-centered">{{bracket.num_games}}</p> </td>
+                                <td style="border: white !important;">
+                                    <p class="has-text-centered">{{bracket.predicted}}</p>
+                                </td>
+                                <td style="border: white !important;">
+                                    <p class="has-text-centered">{{(100 * bracket.pct |float )|round|int}}%</p>
+                                </td>
+                                <td style="border: white !important;">
+                                    <p class="has-text-centered">{{bracket.games_off}}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+
+                    </table>
+
+                    <div class="columns is-mobile">
+                        <div class="column is-one-third">
+                            <p class="has-text-centered">total games off</p>
+                            <p class="has-text-centered is-size-2">{{accuracy[0].games_off}}</p>
+                        </div>
+
+                        <div class="column is-one-third">
+                            <p class="has-text-centered">games off as %</p>
+                            <p class="has-text-centered is-size-2">
+                                {{(100*accuracy[0].games_off_pct)|float|round|int}}%
+                            </p>
+                        </div>
+
+                        <div class="column is-one-third">
+                            <p class="has-text-centered">accuracy</p>
+                            <p class="has-text-centered is-size-2">
+                                {{(100*accuracy[0].accuracy)|float|round|int}}%
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="columns">
+                <div class="column" style="padding-left: 20px;">
+                    <div class="content">
+                        <h4 class="subtitle is-4">
+                            how to interpret these results:
+                        </h4>
+
+                        <p>
+                            While overall accuracy of how much the predicted favorite wins is included here,
+                            the best way to judge this model is by how well calibrated the outcomes are to
+                            its predictions. In other words, if it's wrong the amount it says it's going to be wrong.
+                        </p>
+
+                        <p>
+                            What's this mean? As an example, take all games that are
+                            predicted between a 60%-65% chance for the favorite to win. Over the long-run,
+                            the model is calibrated in this range if the favorite actually does win 60-65% of the time.
+                            The overall model is well calibrated if the same can be said of every probability bin.
+                            The table shown here evaluates how well the model is doing in this regard for the current
+                            season (2019). The columns are:
+                        </p>
+
+                        <ul>
+                            <li><strong>start:</strong> start of the probability bin</li>
+                            <li><strong>end:</strong> end of the probability bin</li>
+                            <li><strong>gms:</strong> the number of games where P(win) was in this probability range</li>
+                            <li><strong>gms correct:</strong> the number of games where the predicted favorite won </li>
+                            <li><strong>acc:</strong> the accuracy in this bin (gms correct / games)</li>
+                            <li><strong>gms off</strong> how many games outcome needed to change for the accuracy
+                                to fall in this bin</li>
+                        </ul>
+                        <br>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+</body>

@@ -4,7 +4,7 @@ import numpy as np
 
 class EloRank:
 
-    def __init__(self, games, k=60, start_rank=1400, season_change=0.2, ot=1.0, home_boost=56):
+    def __init__(self, games, k=48, start_rank=1400, season_change=0.3, ot=1.0, home_boost=56):
 
         """
         Class to initiate and run elo model
