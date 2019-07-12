@@ -3,9 +3,9 @@ A margin-based elo algorithm for men's college lacrosse rankings and predictions
 
 ## about
 You can read about the model on [the website](lacrosselo.com/about). This repo has 3 components:
-* model: the EloRank class used to train and run the elo model as well as develop predictions. It also includes the Google Cloud Function code for running the model in production and updating the database.
-* scrape: Code to scrape scores from MasseyRatings.com. Also includes the Google Cloud Function for running the scraper and saving to database.
-* server: flask web application for serving the website.
+* `model`: the EloRank class used to train and run the elo model as well as develop predictions. It also includes the Google Cloud Function code for running the model in production and updating the database.
+* `scrape`: Code to scrape scores from MasseyRatings.com. Also includes the Google Cloud Function for running the scraper and saving to database.
+* `server`: flask web application for serving the website.
 
 ## citations
 
